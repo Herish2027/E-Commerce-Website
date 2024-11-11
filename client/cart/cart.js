@@ -21,7 +21,7 @@ if (localStorage.getItem('authToken')) {
   profileLink.appendChild(pRound);
   const usernameSpan = document.createElement('span');
   usernameSpan.id = 'username';
-  usernameSpan.textContent = userData[0];
+  usernameSpan.textContent = userData.slice(0,6)+'....';
   profileLink.appendChild(usernameSpan);
   navIcons.appendChild(profileLink);
   const logoutButton = document.createElement('button');
@@ -90,9 +90,11 @@ async function loadCartData() {
             <h3>${product.name}</h3>
             <div class="priceincart">₹${product.price}</div>
             <div class="quantity-controls">
-              <button class="quantity-btn">-</button>
+            <div>
+              <button class="quantity-btn minus">-</button>
               <span>${cartItem.quantity}</span>
-              <button class="quantity-btn">+</button>
+              <button class="quantity-btn plus">+</button>
+              </div>
             </div>
             <div class="button-group">
               <button class="remove-btn">Remove</button>

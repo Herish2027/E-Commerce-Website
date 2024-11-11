@@ -1,4 +1,4 @@
-let cartData = JSON.parse(localStorage.getItem("cartData")) || []; // Load the cart data from localStorage or initialize it as an empty array
+let cartData = JSON.parse(localStorage.getItem("cartData")) || [];
 if (localStorage.getItem('authToken')) {
   const account = document.getElementById('account');
   if (account) account.style.display = 'none';
@@ -19,7 +19,7 @@ if (localStorage.getItem('authToken')) {
   profileLink.appendChild(pRound);
   const usernameSpan = document.createElement('span');
   usernameSpan.id = 'username';
-  usernameSpan.textContent = userData[0];
+  usernameSpan.textContent = userData.length>6?userData.slice(0,6)+'...':userData;
   profileLink.appendChild(usernameSpan);
   navIcons.appendChild(profileLink);
   const logoutButton = document.createElement('button');
@@ -61,7 +61,7 @@ async function loadRingsData() {
               <button onclick="increment('${x.id}')"><i class="bi bi-plus-lg"></i></button>
             </div>
             <div class="clickToAdd hidden">
-              <button id="add-to-cart-btn" onClick={addToast()}>Add To Cart</button>
+              <button id="add-to-cart-btn">Add To Cart</button>
             </div>
           </div>
         </div>`;

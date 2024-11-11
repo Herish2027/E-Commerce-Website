@@ -19,7 +19,7 @@ if (localStorage.getItem('authToken')) {
   profileLink.appendChild(pRound);
   const usernameSpan = document.createElement('span');
   usernameSpan.id = 'username';
-  usernameSpan.textContent = userData[0];
+  usernameSpan.textContent = userData.length>6?userData.slice(0,6)+'...':userData;
   profileLink.appendChild(usernameSpan);
   navIcons.appendChild(profileLink);
   const logoutButton = document.createElement('button');

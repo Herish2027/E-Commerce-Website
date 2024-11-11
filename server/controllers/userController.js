@@ -3,6 +3,44 @@ const mongoose=require('mongoose');
 const userData=require('../model/userModel')
 const bcrypt=require('bcrypt')
 const jwt=require('jsonwebtoken')
+const nodemailer=require('nodemailer');
+//Mail to user
+const sendmail=(email,username)=>{
+   const output=`
+    <p style="font-size:15px">You can Successfully registered at Swarn.pvt.ltd</p>
+    <p style="font-size:15px">Thank you For registering at Swarn</p>
+    <p style="font-size:12px">Regards Thanks</p>
+    
+    `;
+    const transporter=nodemailer.createTransport({
+        service:"gmail",
+        secure:true,
+        port:465,
+        auth:{
+            user:'swarn.pvt.ltd1@gmail.com',
+            pass:'utnslevcxaqzrdjn'
+        },
+        tls:{
+            rejectUnauthorized:false
+        }
+    });
+    const createOutput={
+        from:'swarn.pvt.ltd1@gmail.com',
+        to:`${email}`,
+        subject:'Swarn Pvt',
+        text:`Welcome from Swarn to Register ${username}`,
+        html:output
+    }
+     transporter.sendMail(createOutput,(err,info)=>{
+        if(err){
+            console.log('mail not send to user');
+        }
+        else{
+            console.log('mail will be sent');
+        }
+        
+    })
+}
 exports.signin=async(req,res)=>{
 const {username,email,password,confirmpassword}=req.body;
 const usernameCheck=await userData.findOne({username});
@@ -29,8 +67,13 @@ const user=await userData.create({
     password:hashPassword
 })
 delete user.password;
+sendmail(email,username);
 return res.json({status:true,user})
 }
+
+
+
+            
 exports.login=async(req,res)=>{
     const {email,password}=req.body;
     const emailCheck=await userData.findOne({email})
@@ -43,5 +86,6 @@ exports.login=async(req,res)=>{
     }
   const token=  jwt.sign({userId:emailCheck._id},'ssssshhhhhh',{expiresIn:'3d'});
     delete emailCheck.password;
+   
     return res.json({status:true,emailCheck,token});
 }
