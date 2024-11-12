@@ -1,4 +1,6 @@
 let cartData = JSON.parse(localStorage.getItem("cartData")) || [];
+let wishlistData = JSON.parse(localStorage.getItem("wishlistData")) || [];
+
 if (localStorage.getItem('authToken')) {
   const account = document.getElementById('account');
   if (account) account.style.display = 'none';
@@ -46,7 +48,13 @@ async function loadRingsData() {
         const cartItem = cartData.find((item) => item.id === x.id) || {
           quantity: 0,
         };
+
+        const isInWishlist = wishlistData.some((item) => item.id === x.id);
+
         return `<div class="product-card" id="product-id-${x.id}">
+        <div class="wishlist_icon" onclick="toggleWishlist('${x.id}', this)">
+              <img src="${isInWishlist ? '../images/wishlist_heart_checked.png' : '../images/wishlist_heart_Unchecked.png'}">
+            </div>
           <div class="img">
             <img src="${x.img}" />
           </div>
@@ -62,7 +70,7 @@ async function loadRingsData() {
             </div>
             <div class="clickToAdd hidden">
               <button id="add-to-cart-btn">Add To Cart</button>
-            </div>
+            </div> 
           </div>
         </div>`;
       })
@@ -82,6 +90,7 @@ function addToast(){
   }).showToast();
 }
 // document.getElementById('add-to-cart-btn').addEventListener('click',addToast);
+
 let increment = (id) => {
   let search = cartData.find((x) => x.id === id);
   if (search === undefined) {
@@ -111,7 +120,9 @@ let decrement = (id) => {
   
   updateQuantityDisplay(id);
   localStorage.setItem("cartData", JSON.stringify(cartData));
-  
+  if(localStorage.getItem('authToken')){
+    calculateCartIcon();
+  }
 };
 
 let updateQuantityDisplay = (id) => {
@@ -119,12 +130,28 @@ let updateQuantityDisplay = (id) => {
   let search = cartData.find((x) => x.id === id);
 
   quantitySpan.innerHTML = search ? search.quantity : 0;
-  
 };
 
 function calculateCartIcon() {
   let cartIcon = document.getElementById('cart-icon');
   cartIcon.innerText = cartData.reduce((total, item) => total + item.quantity, 0);
+}
+
+function toggleWishlist(productId, element) {
+  const isInWishlist = wishlistData.some(item => item.id === productId);
+
+  if (isInWishlist) {
+    // Remove from wishlist
+    wishlistData = wishlistData.filter(item => item.id !== productId);
+    element.querySelector('img').src = '../images/wishlist_heart_Unchecked.png'; // Change to unchecked icon
+    Toastify({ text: "Removed from wishlist", duration: 3000, backgroundColor: "red" }).showToast();
+  } else {
+    // Add to wishlist
+    wishlistData.push({ id: productId , quantity : 1});
+    element.querySelector('img').src = '../images/wishlist_heart_checked.png'; // Change to checked icon
+    Toastify({ text: "Added to wishlist", duration: 3000, backgroundColor: "green" }).showToast();
+  }
+  localStorage.setItem("wishlistData", JSON.stringify(wishlistData));
 }
 
 window.onload = loadRingsData;

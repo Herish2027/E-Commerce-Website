@@ -27,6 +27,7 @@
   text-align: center;
   padding: 20px;
   background-color: #f9f5e6;
+  position: relative;
 }
 
 .product-card .img img {
@@ -56,6 +57,7 @@
   margin-top: 20px;
   display: flex;
   justify-content: space-around;
+  flex-direction: row;
   align-items: center;
 }
 
@@ -104,12 +106,18 @@
 }
 
 .hidden {
-    display: none;
+  display: none;
 }
 
-.cartwrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.wishlist_icon{
+  position: absolute;
+  top: 2%;
+  right: 2%;
+  height:26px;
+  width:26px;
 }
 
+.wishlist_icon  img{
+  height: 100%;
+  width: 100%;
+}

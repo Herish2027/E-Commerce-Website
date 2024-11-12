@@ -31,7 +31,7 @@
                 alt=""
               /><span>Stores</span></a
             >
-            <a href=""
+            <a href="./wishlist/wishlist.html"
               ><img
                 src="images/favorite_25dp_00000_FILL0_wght400_GRAD0_opsz24.png"
                 alt=""
@@ -395,7 +395,7 @@
                       <p style="padding-bottom: 10px; font-size: 18px">${product.name}</p>
                       <p style="padding-bottom: 5%;">
                         <span class="dis-price">₹${product.discountedPrice || product.price}</span> 
-                        <span class="price">₹${product.price}</span>
+                        <span class="price">₹${(parseInt((product.price).replace(/\D/g, "")))*2}</span>
                       </p>
                       <button onclick="addToCart('${product.id}')">ADD TO CART</button>
                     </div>
